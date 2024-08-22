@@ -44,14 +44,20 @@
     // 打开目录
     if (is_dir($directory)) {
         if ($handle = opendir($directory)) {
+            // 支持的图片扩展名
+            $validExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
             // 遍历目录中的文件
             while (false !== ($file = readdir($handle))) {
-                // 只处理 .jpg 文件
-                if (pathinfo($file, PATHINFO_EXTENSION) === 'jpg') {
+                // 获取文件扩展名并转换为小写
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+                // 只处理有效扩展名的文件
+                if (in_array($extension, $validExtensions)) {
                     // 获取文件名
                     $filename = pathinfo($file, PATHINFO_FILENAME);
                     // 图片链接保持为网络路径
-                    $markdownLink = "![{$filename}](https://qq.md/img/{$file})";
+                    $markdownLink = "![{$filename}](http://localhost/img/{$file})";  // 改成图床的地址链接
                     // 输出本地图片预览及复制按钮
                     echo '
                     <div class="image-container">
